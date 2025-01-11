@@ -34,3 +34,18 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Tech Stack
+
+- NextJS as an SSR application
+    - Used to CSR, but interested in trying SSR.
+- TailwindCSS for quick styling
+    - Used simple components from Flowbite
+- Prism as an ORM and managed Postgres DB solution
+    - Wanted to use it as a ORM, turns out it also has a pretty generous free managed Postgres tier.
+- Clerk for authentication
+    - Fuss free
+- SWR for data fetching and caching (might not be needed?)
+    - Used to cache when switching between chats.
+- 
+

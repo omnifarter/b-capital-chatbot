@@ -1,5 +1,4 @@
 import { SignedOut, SignInButton, SignedIn, UserButton } from "@clerk/nextjs";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function Navbar() {
   return (

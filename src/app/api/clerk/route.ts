@@ -47,7 +47,8 @@ export async function POST(req: Request) {
       status: 400,
     });
   }
-  createOrUpdateUser(evt.data as UserJSON);
+  const user = await createOrUpdateUser(evt.data as UserJSON);
+  return Response.json({ message: `received and created user ${user.name}` });
 }
 
 export async function GET() {

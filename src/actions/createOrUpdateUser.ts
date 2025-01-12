@@ -5,7 +5,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export default async function createOrUpdateUser(data: UserJSON) {
-  prisma.user.upsert({
+  return await prisma.user.upsert({
     where: {
       id: data.id,
     },

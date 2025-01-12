@@ -38,14 +38,18 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ## Tech Stack
 
 - NextJS as an SSR application
-    - Used to CSR, but interested in trying SSR.
+  - Used to CSR, but interested in trying SSR.
 - TailwindCSS for quick styling
-    - Used simple components from Flowbite
+  - Used simple components from Flowbite
 - Prism as an ORM and managed Postgres DB solution
-    - Wanted to use it as a ORM, turns out it also has a pretty generous free managed Postgres tier.
+  - Wanted to use it as a ORM, turns out it also has a pretty generous free managed Postgres tier.
 - Clerk for authentication
-    - Fuss free
+  - Fuss free
 - SWR for data fetching and caching (might not be needed?)
-    - Used to cache when switching between chats.
-- 
+  - Used to cache when switching between chats.
+-
 
+## Things to clean up if there is time:
+
+- Pagination of chat history. We look at implementing a reversed endless scroll behaviour, and retrieve the next batch of messages when the scroll reaches the top.
+-

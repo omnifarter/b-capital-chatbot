@@ -34,6 +34,17 @@ export const POST = async (req: Request) => {
   } else {
     //TODO: check if user is able to access the chat id.
   }
+  prisma.message.create({
+    data: {
+      text: messages[messages.length - 1].content,
+      chat: {
+        connect: {
+          id: chatId,
+        },
+      },
+      sender: "USER",
+    },
+  });
 
   const result = streamText({
     model: openai("gpt-3.5-turbo"),

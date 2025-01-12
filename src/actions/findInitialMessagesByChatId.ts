@@ -1,11 +1,10 @@
 "use server";
+import { prisma } from "@/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { PrismaClient } from "@prisma/client";
 import { Message } from "ai";
 
-const prisma = new PrismaClient();
-
-export default async function getInitialMessages(
+export default async function findInitialMessagesByChatId(
   chatId?: string
 ): Promise<Message[]> {
   if (!chatId) {

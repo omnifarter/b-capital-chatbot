@@ -2,19 +2,26 @@ import { currentUser } from "@clerk/nextjs/server";
 import { PrismaClient } from "@prisma/client";
 import { Message, streamText } from "ai";
 import { openai } from "@ai-sdk/openai";
-const prisma = new PrismaClient();
+import { createTitle } from "@/helpers";
+import { prisma } from "@/prisma";
 
-// don't want the chat title to be too long...
-const createTitle = (message: string) => {
-  if (message.length <= 25) {
-    return message;
-  } else {
-    return message.slice(0, 22) + "...";
+export const GET = async () => {
+  const user = await currentUser();
+  if (!user) {
+    return new Response("Unauthorized", { status: 401 });
   }
+  return prisma.chat.findMany({
+    where: {
+      userId: user.id,
+    },
+  });
 };
 
 export const POST = async (req: Request) => {
   const user = await currentUser();
+  if (!user) {
+    return new Response("Unauthorized", { status: 401 });
+  }
   const data: { chatId: string; messages: Message[] } = await req.json();
   let chatId = data.chatId;
   const messages = data.messages;
@@ -32,7 +39,15 @@ export const POST = async (req: Request) => {
     });
     chatId = chat.id;
   } else {
-    //TODO: check if user is able to access the chat id.
+    const record = await prisma.chat.findFirst({
+      where: {
+        id: chatId,
+        userId: user.id,
+      },
+    });
+    if (!record) {
+      return new Response("Forbidden", { status: 403 });
+    }
   }
   prisma.message.create({
     data: {

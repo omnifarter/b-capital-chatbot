@@ -1,5 +1,5 @@
 import MessageForm from "@/components/MessageForm";
-import getInitialMessages from "@/actions/getInitialMessages";
+import getInitialMessages from "@/actions/findInitialMessagesByChatId";
 
 export default async function Page({
   params,

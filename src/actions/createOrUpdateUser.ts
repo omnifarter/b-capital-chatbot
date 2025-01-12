@@ -1,8 +1,6 @@
 "use server";
+import { prisma } from "@/prisma";
 import { UserJSON } from "@clerk/nextjs/server";
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
 
 export default async function createOrUpdateUser(data: UserJSON) {
   return await prisma.user.upsert({

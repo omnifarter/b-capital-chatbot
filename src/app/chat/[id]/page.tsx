@@ -1,7 +1,5 @@
 import MessageForm from "@/components/MessageForm";
 import getInitialMessages from "@/actions/getInitialMessages";
-import { Button } from "@headlessui/react";
-import { PaperAirplaneIcon } from "@heroicons/react/24/solid";
 
 export default async function Page({
   params,

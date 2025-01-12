@@ -1,6 +1,6 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { PrismaClient } from "@prisma/client";
-import { CoreMessage, Message, streamText } from "ai";
+import { Message, streamText } from "ai";
 import { openai } from "@ai-sdk/openai";
 const prisma = new PrismaClient();
 
@@ -15,8 +15,9 @@ const createTitle = (message: string) => {
 
 export const POST = async (req: Request) => {
   const user = await currentUser();
-  let { chatId, messages }: { chatId: string; messages: Message[] } =
-    await req.json();
+  const data: { chatId: string; messages: Message[] } = await req.json();
+  let chatId = data.chatId;
+  const messages = data.messages;
   // if chatId doesn't exist, create it
   if (!chatId) {
     const chat = await prisma.chat.create({

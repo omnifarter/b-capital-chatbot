@@ -1,5 +1,5 @@
 "use server";
-import { currentUser, UserJSON } from "@clerk/nextjs/server";
+import { UserJSON } from "@clerk/nextjs/server";
 import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();

@@ -1,6 +1,4 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
-import createOrUpdateUser from "./actions/createOrUpdateUser";
-import { NextResponse } from "next/server";
 
 const isProtectedRoute = createRouteMatcher(["/chat/(.*)"]);
 

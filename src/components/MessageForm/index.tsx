@@ -1,6 +1,5 @@
 "use client";
 import { Message, useChat } from "ai/react";
-import getInitialMessages from "../../actions/getInitialMessages";
 interface MessageFormProps {
   chatId?: string;
   initialMessages?: Message[];

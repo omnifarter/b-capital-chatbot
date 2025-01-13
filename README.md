@@ -20,7 +20,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Deploy on Vercel
 
-only code committed on the `main` branch will be deployed to Vercel. You can check out the deployed application at [http://chatbot.pgabriel.dev](https://chatbot.pgabriel.dev).
+only code committed on the `main` branch will be deployed to Vercel. You can check out the deployed application at [https://chatbot.pgabriel.dev](https://chatbot.pgabriel.dev).
 
 ## Tech Stack and links
 

@@ -10,8 +10,10 @@ import "./globals.css";
 import {
   AppShell,
   Burger,
+  ColorSchemeScript,
   Container,
   Group,
+  mantineHtmlProps,
   MantineProvider,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
@@ -27,7 +29,10 @@ export default function RootLayout({
   const [opened, { toggle }] = useDisclosure();
   const { id: chatId } = useParams();
   return (
-    <html lang="en">
+    <html lang="en" {...mantineHtmlProps}>
+      <head>
+        <ColorSchemeScript />
+      </head>
       <body>
         <MantineProvider>
           <ClerkProvider>

@@ -3,41 +3,55 @@ import { useUser } from "@clerk/nextjs";
 import { Message, useChat } from "ai/react";
 import LoginDialog from "../LoginDialog";
 import { useDisclosure } from "@mantine/hooks";
-import { Card, Input, Stack, Text } from "@mantine/core";
+import { Card, Input, Skeleton, Stack, Text } from "@mantine/core";
 import createChat from "@/actions/createChat";
 import { createTitle } from "@/helpers";
-import { FormEventHandler, useRef } from "react";
+import { FormEventHandler, useEffect, useRef, useState } from "react";
 import { Chat } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import findInitialMessagesByChatId from "@/actions/findInitialMessagesByChatId";
 interface MessageFormProps {
   chatId?: string;
-  initialMessages?: Message[];
 }
-const MessageForm = ({ chatId, initialMessages }: MessageFormProps) => {
+const MessageForm = ({ chatId }: MessageFormProps) => {
   const { isSignedIn } = useUser();
   const chatRef = useRef("");
   const [opened, { open, close }] = useDisclosure(false);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  useEffect(() => {
+    const getInitialMessages = async () => {
+      if (!chatId) {
+        setLoading(false);
+        return;
+      }
+      const messages = await findInitialMessagesByChatId(chatId);
+      setMessages(messages);
+      setLoading(false);
+    };
+    getInitialMessages();
+  }, []);
 
   const onFinish = () => {
     if (!chatId && chatRef) {
       router.push(`/chat/${chatRef.current}`);
     }
   };
-  const { messages, input, handleInputChange, handleSubmit } = useChat({
-    initialMessages,
-    body: {
-      chatId,
-    },
-    onFinish,
-  });
+  const { messages, input, handleInputChange, handleSubmit, setMessages } =
+    useChat({
+      body: {
+        chatId,
+      },
+      onFinish,
+    });
 
   const showLoginIfNotAuthenticated = () => {
     if (isSignedIn) return;
     open();
   };
 
-  const onSubmit:FormEventHandler<HTMLFormElement> = async (e) => {
+  const onSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     if (!chatId && chatRef) {
       const chat: Chat = await createChat(createTitle(input));
@@ -47,6 +61,16 @@ const MessageForm = ({ chatId, initialMessages }: MessageFormProps) => {
     }
     handleSubmit(e);
   };
+  if (loading) {
+    return (
+      <Stack w="100%" h="100%" gap={32}>
+        <Skeleton w="full" h={32} mt={64} />
+        <Skeleton w="full" h={32} />
+        <Skeleton w="full" h={32} />
+        <Skeleton w="full" h={32} />
+      </Stack>
+    );
+  }
   return (
     <Stack h="100%" justify="space-between">
       {opened && <LoginDialog close={close} />}

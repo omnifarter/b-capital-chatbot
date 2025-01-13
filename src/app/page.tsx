@@ -7,7 +7,7 @@ export default async function Home() {
       <Title mt="lg" style={{ textAlign: "center" }}>
         Hello! How can I help you today?
       </Title>
-      <MessageForm initialMessages={[]} />
+      <MessageForm />
     </Stack>
   );
 }

@@ -25,7 +25,6 @@ export default async function findInitialMessagesByChatId(
       orderBy: {
         createdAt: "asc",
       },
-      take: 9, // we will only send up to 10 of the latest messages, including the latestMessage
     })
   ).map((message) => ({
     id: message.id,

@@ -3,13 +3,14 @@ import { useUser } from "@clerk/nextjs";
 import { useChat } from "ai/react";
 import LoginDialog from "../LoginDialog";
 import { useDisclosure } from "@mantine/hooks";
-import { Card, Input, Skeleton, Stack, Text } from "@mantine/core";
+import { Card, Input, Stack, Text } from "@mantine/core";
 import createChat from "@/actions/createChat";
 import { createTitle } from "@/helpers";
 import { FormEventHandler, useEffect, useRef, useState } from "react";
 import { Chat } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import findInitialMessagesByChatId from "@/actions/findInitialMessagesByChatId";
+import SkeletonMessage from "./SkeletonMessage";
 interface MessageFormProps {
   chatId?: string;
 }
@@ -38,13 +39,20 @@ const MessageForm = ({ chatId }: MessageFormProps) => {
       router.push(`/chat/${chatRef.current}`);
     }
   };
-  const { messages, input, handleInputChange, handleSubmit, setMessages } =
-    useChat({
-      body: {
-        chatId,
-      },
-      onFinish,
-    });
+
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    setMessages,
+    isLoading,
+  } = useChat({
+    body: {
+      chatId,
+    },
+    onFinish,
+  });
 
   const showLoginIfNotAuthenticated = () => {
     if (isSignedIn) return;
@@ -54,6 +62,7 @@ const MessageForm = ({ chatId }: MessageFormProps) => {
   const onSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     if (!chatId && chatRef) {
+      //create chat if not present.
       const chat: Chat = await createChat(createTitle(input));
       chatRef.current = chat.id;
       handleSubmit(e, { body: { chatId: chat.id } });
@@ -61,15 +70,9 @@ const MessageForm = ({ chatId }: MessageFormProps) => {
     }
     handleSubmit(e);
   };
+
   if (loading) {
-    return (
-      <Stack w="100%" h="100%" gap={32}>
-        <Skeleton w="full" h={32} mt={64} />
-        <Skeleton w="full" h={32} />
-        <Skeleton w="full" h={32} />
-        <Skeleton w="full" h={32} />
-      </Stack>
-    );
+    return <SkeletonMessage />;
   }
   return (
     <Stack h="100%" justify="space-between">
@@ -99,6 +102,7 @@ const MessageForm = ({ chatId }: MessageFormProps) => {
         <Input
           value={input}
           placeholder="Say something..."
+          disabled={isLoading}
           onFocus={showLoginIfNotAuthenticated}
           onChange={handleInputChange}
           mb="lg"

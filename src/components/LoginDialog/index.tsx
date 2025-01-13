@@ -3,7 +3,10 @@
 import { SignInButton, SignUpButton } from "@clerk/nextjs";
 import { Button, Group, Modal, Text } from "@mantine/core";
 
-const LoginDialog = ({ close }: any) => {
+interface LoginDialogProps {
+  close(): void;
+}
+const LoginDialog = ({ close }: LoginDialogProps) => {
   return (
     <Modal opened onClose={close} title="Sign Up to Start Exploring!">
       <Text pt="lg" pb="lg">

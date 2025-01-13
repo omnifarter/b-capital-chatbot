@@ -1,4 +1,4 @@
-import { Container, Stack, Text, Title } from "@mantine/core";
+import { Stack, Text, Title } from "@mantine/core";
 import Link from "next/link";
 
 export default function NotFound() {

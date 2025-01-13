@@ -14,6 +14,7 @@ import {
 import { Chat } from "@prisma/client";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
+import SkeletonChat from "./SkeletonChat";
 
 interface ChatListProps {
   activeChat?: string;
@@ -21,13 +22,19 @@ interface ChatListProps {
 const ChatList = ({ activeChat }: ChatListProps) => {
   const [chats, setChats] = useState<Chat[]>([]);
   const chatRef = useContext(ChatContext);
+  const [loading, setLoading] = useState(true);
   const { isSignedIn } = useAuth();
   useEffect(() => {
     const fetchChats = async () => {
       setChats(await findChatsByUser());
+      setLoading(false);
     };
     fetchChats();
   }, [isSignedIn, chatRef.current]);
+
+  if (loading) {
+    return <SkeletonChat />;
+  }
   return (
     <AppShell.Navbar>
       <Stack style={{ height: "100%" }} dir="col">

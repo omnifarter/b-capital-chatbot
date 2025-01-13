@@ -10,6 +10,7 @@ import "./globals.css";
 import {
   AppShell,
   Burger,
+  Button,
   ColorSchemeScript,
   Container,
   Group,
@@ -58,7 +59,11 @@ export default function RootLayout({
                     </div>
                     <div>
                       <SignedOut>
-                        <SignInButton />
+                        <SignInButton>
+                          <div>
+                            <Button variant="outline">Sign In</Button>
+                          </div>
+                        </SignInButton>
                       </SignedOut>
                       <SignedIn>
                         <UserButton />

@@ -1,7 +1,7 @@
 "use server";
 import { validateChatWithUser } from "@/helpers/validation";
 import { prisma } from "@/prisma";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { Message } from "ai";
 import { redirect } from "next/navigation";
 
@@ -11,18 +11,13 @@ export default async function findInitialMessagesByChatId(
   if (!chatId) {
     return [];
   }
-  const user = await currentUser();
-  if (user?.id && !(await validateChatWithUser(chatId, user.id))) {
+  const { userId } = await auth();
+  if (userId && !(await validateChatWithUser(chatId, userId))) {
     redirect("/404");
   }
   return (
     await prisma.message.findMany({
       where: {
-        chat: {
-          userId: {
-            equals: user?.id,
-          },
-        },
         chatId: {
           equals: chatId,
         },

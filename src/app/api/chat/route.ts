@@ -1,19 +1,19 @@
-import { currentUser } from "@clerk/nextjs/server";
 import { Message, streamText } from "ai";
 import { openai } from "@ai-sdk/openai";
 import { prisma } from "@/prisma";
 import { validateChatWithUser } from "@/helpers/validation";
+import { auth } from "@clerk/nextjs/server";
 
 export const POST = async (req: Request) => {
-  const user = await currentUser();
+  const { userId } = await auth();
   const data: { chatId: string; messages: Message[] } = await req.json();
   const chatId = data.chatId;
   const messages = data.messages;
 
-  if (!user) {
+  if (!userId) {
     return new Response("Unauthorized", { status: 401 });
   }
-  if (chatId && !(await validateChatWithUser(chatId, user.id))) {
+  if (chatId && !(await validateChatWithUser(chatId, userId))) {
     return new Response("Forbidden", { status: 403 });
   }
   // save the user message in the db, and create the chatId if it doesn't exist.

@@ -1,11 +1,11 @@
 "use server";
 import { prisma } from "@/prisma";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 export default async function createChat(title: string) {
-  const user = await currentUser();
-  if (!user) {
+  const { userId } = await auth();
+  if (!userId) {
     return redirect("/");
   }
   return await prisma.chat.create({
@@ -13,7 +13,7 @@ export default async function createChat(title: string) {
       title,
       user: {
         connect: {
-          id: user?.id,
+          id: userId,
         },
       },
     },

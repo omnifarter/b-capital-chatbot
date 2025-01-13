@@ -47,8 +47,8 @@ const ChatList = ({ activeChat }: ChatListProps) => {
           ))}
         </ScrollArea>
         <Container style={{ marginTop: "auto" }} mt="auto" w="100%" py="lg">
-          <Button variant="subtle" style={{ width: "100%" }}>
-            <Link href={`/`}>New chat</Link>
+          <Button variant="subtle" w="100%" component={Link} href="/">
+            New chat
           </Button>
         </Container>
       </Stack>

@@ -1,18 +1,18 @@
 "use server";
 import { prisma } from "@/prisma";
-import { currentUser } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 
 export default async function findChatsByUser() {
-  const user = await currentUser();
-  if (!user) {
+  const { userId } = await auth();
+  if (!userId) {
     return [];
   }
   return await prisma.chat.findMany({
     where: {
-      userId: user.id,
+      userId,
     },
     orderBy: {
-      createdAt: "asc",
+      createdAt: "desc",
     },
   });
 }

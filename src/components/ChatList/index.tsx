@@ -1,5 +1,6 @@
 "use client";
 import findChatsByUser from "@/actions/findChatsByUser";
+import { useAuth } from "@clerk/nextjs";
 import {
   AppShell,
   Button,
@@ -18,12 +19,13 @@ interface ChatListProps {
 }
 const ChatList = ({ activeChat }: ChatListProps) => {
   const [chats, setChats] = useState<Chat[]>([]);
+  const { isSignedIn } = useAuth();
   useEffect(() => {
     const fetchChats = async () => {
       setChats(await findChatsByUser());
     };
     fetchChats();
-  }, []);
+  }, [isSignedIn]);
   return (
     <AppShell.Navbar>
       <Stack style={{ height: "100%" }} dir="col">

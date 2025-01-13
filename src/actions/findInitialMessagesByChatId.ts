@@ -2,7 +2,6 @@
 import { validateChatWithUser } from "@/helpers/validation";
 import { prisma } from "@/prisma";
 import { currentUser } from "@clerk/nextjs/server";
-import { PrismaClient } from "@prisma/client";
 import { Message } from "ai";
 import { redirect } from "next/navigation";
 

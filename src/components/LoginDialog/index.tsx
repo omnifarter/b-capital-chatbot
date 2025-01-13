@@ -1,7 +1,7 @@
 "use client";
 
 import { SignInButton, SignUpButton } from "@clerk/nextjs";
-import { Button, Container, Group, Modal, Text } from "@mantine/core";
+import { Button, Group, Modal, Text } from "@mantine/core";
 
 const LoginDialog = ({ close }: any) => {
   return (

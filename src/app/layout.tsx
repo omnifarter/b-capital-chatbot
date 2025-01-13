@@ -39,7 +39,7 @@ export default function RootLayout({
                 collapsed: { desktop: !opened, mobile: !opened },
               }}
             >
-              <ChatList activeChat={chatId} />
+              <ChatList activeChat={chatId as string | undefined} />
               <AppShell.Header>
                 <Group h="100%" px="md" justify="space-between">
                   <div>

@@ -1,7 +1,6 @@
 "use server";
 import MessageForm from "@/components/MessageForm";
 import getInitialMessages from "@/actions/findInitialMessagesByChatId";
-import { Container, Group } from "@mantine/core";
 
 export default async function Page({
   params,

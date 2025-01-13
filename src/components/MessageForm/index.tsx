@@ -6,7 +6,7 @@ import { useDisclosure } from "@mantine/hooks";
 import { Card, Input, Stack, Text } from "@mantine/core";
 import createChat from "@/actions/createChat";
 import { createTitle } from "@/helpers";
-import { useRef } from "react";
+import { FormEventHandler, useRef } from "react";
 import { Chat } from "@prisma/client";
 import { useRouter } from "next/navigation";
 interface MessageFormProps {
@@ -37,7 +37,7 @@ const MessageForm = ({ chatId, initialMessages }: MessageFormProps) => {
     open();
   };
 
-  const onSubmit = async (e) => {
+  const onSubmit:FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     if (!chatId && chatRef) {
       const chat: Chat = await createChat(createTitle(input));

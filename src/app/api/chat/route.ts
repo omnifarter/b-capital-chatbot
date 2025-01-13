@@ -7,7 +7,7 @@ import { validateChatWithUser } from "@/helpers/validation";
 export const POST = async (req: Request) => {
   const user = await currentUser();
   const data: { chatId: string; messages: Message[] } = await req.json();
-  let chatId = data.chatId;
+  const chatId = data.chatId;
   const messages = data.messages;
 
   if (!user) {

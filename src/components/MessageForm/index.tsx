@@ -1,6 +1,6 @@
 "use client";
 import { useUser } from "@clerk/nextjs";
-import { Message, useChat } from "ai/react";
+import { useChat } from "ai/react";
 import LoginDialog from "../LoginDialog";
 import { useDisclosure } from "@mantine/hooks";
 import { Card, Input, Skeleton, Stack, Text } from "@mantine/core";

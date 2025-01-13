@@ -29,15 +29,3 @@ only code committed on the `main` branch will be deployed to Vercel. You can che
 3. [Prism](https://www.prisma.io/docs/orm/overview/introduction) as an ORM and managed Postgres DB solution
 4. [Clerk](https://clerk.com/docs/quickstarts/nextjs) for authentication
 5. [AI SDK](https://sdk.vercel.ai/docs/getting-started/nextjs-app-router) for easy interfacing with LLMs
-
-## Things I would like to do with time
-
-##### Workflow
-- Unit tests
-- Github actions for triggering linting, tests and scans
-- Multiple environments
-
-##### Features
-- Pagination of chat history. We look at implementing a reversed endless scroll behaviour, and retrieve the next batch of messages when the scroll reaches the top.
-- Cleaning up of chats
-- Attachments

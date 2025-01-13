@@ -23,7 +23,7 @@ const ChatList = ({ activeChat }: ChatListProps) => {
       setChats(await findChatsByUser());
     };
     fetchChats();
-  }, [activeChat]);
+  }, []);
   return (
     <AppShell.Navbar>
       <Stack style={{ height: "100%" }} dir="col">

@@ -6,20 +6,26 @@ import { useDisclosure } from "@mantine/hooks";
 import { Card, Input, Stack, Text } from "@mantine/core";
 import createChat from "@/actions/createChat";
 import { createTitle } from "@/helpers";
-import { FormEventHandler, useEffect, useRef, useState } from "react";
+import {
+  FormEventHandler,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { Chat } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import findInitialMessagesByChatId from "@/actions/findInitialMessagesByChatId";
 import SkeletonMessage from "./SkeletonMessage";
+import { ChatContext } from "@/app/layout";
 interface MessageFormProps {
   chatId?: string;
 }
 const MessageForm = ({ chatId }: MessageFormProps) => {
   const { isSignedIn } = useUser();
-  const chatRef = useRef("");
   const [opened, { open, close }] = useDisclosure(false);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const chatRef = useContext(ChatContext);
 
   useEffect(() => {
     const getInitialMessages = async () => {
@@ -35,7 +41,7 @@ const MessageForm = ({ chatId }: MessageFormProps) => {
   }, []);
 
   const onFinish = () => {
-    if (!chatId && chatRef) {
+    if (!chatId && chatRef.current != null) {
       router.push(`/chat/${chatRef.current}`);
     }
   };

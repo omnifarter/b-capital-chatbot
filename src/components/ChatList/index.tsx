@@ -1,5 +1,6 @@
 "use client";
 import findChatsByUser from "@/actions/findChatsByUser";
+import { ChatContext } from "@/app/layout";
 import { useAuth } from "@clerk/nextjs";
 import {
   AppShell,
@@ -12,20 +13,21 @@ import {
 } from "@mantine/core";
 import { Chat } from "@prisma/client";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 interface ChatListProps {
   activeChat?: string;
 }
 const ChatList = ({ activeChat }: ChatListProps) => {
   const [chats, setChats] = useState<Chat[]>([]);
+  const chatRef = useContext(ChatContext);
   const { isSignedIn } = useAuth();
   useEffect(() => {
     const fetchChats = async () => {
       setChats(await findChatsByUser());
     };
     fetchChats();
-  }, [isSignedIn]);
+  }, [isSignedIn, chatRef.current]);
   return (
     <AppShell.Navbar>
       <Stack style={{ height: "100%" }} dir="col">

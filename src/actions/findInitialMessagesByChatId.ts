@@ -1,8 +1,10 @@
 "use server";
+import { validateChatWithUser } from "@/helpers/validation";
 import { prisma } from "@/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { PrismaClient } from "@prisma/client";
 import { Message } from "ai";
+import { redirect } from "next/navigation";
 
 export default async function findInitialMessagesByChatId(
   chatId?: string
@@ -11,6 +13,9 @@ export default async function findInitialMessagesByChatId(
     return [];
   }
   const user = await currentUser();
+  if (user?.id && !(await validateChatWithUser(chatId, user.id))) {
+    redirect("/404");
+  }
   return (
     await prisma.message.findMany({
       where: {
@@ -24,7 +29,7 @@ export default async function findInitialMessagesByChatId(
         },
       },
       orderBy: {
-        createdAt: "desc",
+        createdAt: "asc",
       },
       take: 9, // we will only send up to 10 of the latest messages, including the latestMessage
     })

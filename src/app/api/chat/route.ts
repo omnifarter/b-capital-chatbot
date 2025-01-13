@@ -1,55 +1,23 @@
 import { currentUser } from "@clerk/nextjs/server";
-import { PrismaClient } from "@prisma/client";
 import { Message, streamText } from "ai";
 import { openai } from "@ai-sdk/openai";
-import { createTitle } from "@/helpers";
 import { prisma } from "@/prisma";
-
-export const GET = async () => {
-  const user = await currentUser();
-  if (!user) {
-    return new Response("Unauthorized", { status: 401 });
-  }
-  return prisma.chat.findMany({
-    where: {
-      userId: user.id,
-    },
-  });
-};
+import { validateChatWithUser } from "@/helpers/validation";
 
 export const POST = async (req: Request) => {
   const user = await currentUser();
-  if (!user) {
-    return new Response("Unauthorized", { status: 401 });
-  }
   const data: { chatId: string; messages: Message[] } = await req.json();
   let chatId = data.chatId;
   const messages = data.messages;
-  // if chatId doesn't exist, create it
-  if (!chatId) {
-    const chat = await prisma.chat.create({
-      data: {
-        user: {
-          connect: {
-            id: user?.id,
-          },
-        },
-        title: createTitle(messages[0].content),
-      },
-    });
-    chatId = chat.id;
-  } else {
-    const record = await prisma.chat.findFirst({
-      where: {
-        id: chatId,
-        userId: user.id,
-      },
-    });
-    if (!record) {
-      return new Response("Forbidden", { status: 403 });
-    }
+
+  if (!user) {
+    return new Response("Unauthorized", { status: 401 });
   }
-  prisma.message.create({
+  if (chatId && !(await validateChatWithUser(chatId, user.id))) {
+    return new Response("Forbidden", { status: 403 });
+  }
+  // save the user message in the db, and create the chatId if it doesn't exist.
+  await prisma.message.create({
     data: {
       text: messages[messages.length - 1].content,
       chat: {
@@ -65,7 +33,7 @@ export const POST = async (req: Request) => {
     model: openai("gpt-3.5-turbo"),
     messages,
     async onFinish({ text }) {
-      // once finished, save in the database.
+      // once finished, save bot message in the database.
       await prisma.message.create({
         data: {
           text,
